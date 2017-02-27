@@ -3,18 +3,23 @@
 {% block title %}Liste des locations{% endblock %}
 
 {% block body %}
+    <h1>Toutes nos locations</h1>
     <section id="accommodations">
+        {% for row in accommodations|batch(2) %}
+        <div class="row">
             {% for accommodation in accommodations %}
-        <div>
-            <h1>{{ accommodation.location }} <span class="price">{{ accommodation.pricePerNight }}</span></h1>
-            <p>{{ accommodation.description }}</p>
-            <dl>
-                <dt>Surface</dt>
-                <dd>{{ accommodation.flatSize }}</dd>
-            </dl>
-            <p><img src="{{ accommodation.photoUrl }}" /></p>
-            <a href="#">Faire une demande de réservation</a>
-        </div>
+            <div class="col-md-6">
+                <strong>{{ accommodation.location }}, à partir de <span class="price">{{ accommodation.pricePerNight }}</span></strong>
+                <p>{{ accommodation.description }}</p>
+                <dl>
+                    <dt>Surface</dt>
+                    <dd>{{ accommodation.flatSize }}</dd>
+                </dl>
+                <p><img src="{{ accommodation.photoUrl }}" width="100%" /></p>
+                <a href="#">Faire une demande de réservation</a>
+            </div>
             {% endfor %}
+        </div>
+        {% endfor %}
     </section>
 {% endblock %}
