@@ -1,5 +1,20 @@
 {% extends '::base.html.twig' %}
 
+{% block title %}Liste des locations{% endblock %}
+
 {% block body %}
-<h1>Hello :)</h1>
+    <section id="accommodations">
+            {% for accommodation in accommodations %}
+        <div>
+            <h1>{{ accommodation.location }} <span class="price">{{ accommodation.pricePerNight }}</span></h1>
+            <p>{{ accommodation.description }}</p>
+            <dl>
+                <dt>Surface</dt>
+                <dd>{{ accommodation.flatSize }}</dd>
+            </dl>
+            <p><img src="{{ accommodation.photoUrl }}" /></p>
+            <a href="#">Faire une demande de réservation</a>
+        </div>
+            {% endfor %}
+    </section>
 {% endblock %}

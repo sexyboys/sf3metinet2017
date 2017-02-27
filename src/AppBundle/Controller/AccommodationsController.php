@@ -9,6 +9,11 @@ class AccommodationsController extends Controller
 {
     public function listAction(Request $request)
     {
-        return $this->render('@App/Accommodations/list.html.twig');
+        $accommodationRepository = $this->get('repositories.accommodations');
+        $accommodations = $accommodationRepository->findAll();
+
+        return $this->render('@App/Accommodations/list.html.twig', [
+            'accommodations' => $accommodations,
+        ]);
     }
 }
