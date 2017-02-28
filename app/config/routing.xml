@@ -16,6 +16,18 @@
         <default key="_controller">AppBundle:Reservations:reserve</default>
     </route>
 
+    <route id="admin.reservation_requests" path="/admin/reservations/requests">
+        <default key="_controller">AppBundle:Reservations:listReservationRequests</default>
+    </route>
+
+    <route id="admin.reservation_requests.accept" path="/admin/reservations/requests/{reservationRequestId}/accept">
+        <default key="_controller">AppBundle:Reservations:acceptReservationRequest</default>
+    </route>
+
+    <route id="admin.reservation_requests.refuse" path="/admin/reservations/requests/{reservationRequestId}/refuse">
+        <default key="_controller">AppBundle:Reservations:refuseReservationRequest</default>
+    </route>
+
     <route id="admin.reservations" path="/admin/reservations">
         <default key="_controller">AppBundle:Reservations:listReservations</default>
     </route>

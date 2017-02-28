@@ -1,0 +1,31 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+    <table class="table">
+        <thead class="thead-inverse">
+        <tr>
+            <th>Reservation Request Id</th>
+            <th>Accommodation Id</th>
+            <th>Customer E-mail</th>
+            <th>Check-in</th>
+            <th>Check-out</th>
+            <th>Status</th>
+            <th colspan="2">Manage</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for reservationRequest in reservationRequests %}
+        <tr>
+            <th scope="row">{{ reservationRequest.id }}</th>
+            <td>{{ reservationRequest.accommodationId }}</td>
+            <td>{{ reservationRequest.customer.email }}</td>
+            <td>{{ reservationRequest.reservationDate.from.dateTimeImmutable | localizeddate('medium', 'none') }}</td>
+            <td>{{ reservationRequest.reservationDate.to.dateTimeImmutable | localizeddate('medium', 'none')  }}</td>
+            <td>{{ reservationRequest.status | lower }}</td>
+            <td><a href="{{ path('admin.reservation_requests.accept', {'reservationRequestId': reservationRequest.id}) }}">Accept</a></td>
+            <td><a href="{{ path('admin.reservation_requests.refuse', {'reservationRequestId': reservationRequest.id}) }}">Refuse</a></td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

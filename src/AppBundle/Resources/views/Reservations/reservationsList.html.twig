@@ -16,9 +16,9 @@
         <tr>
             <th scope="row">{{ reservation.id }}</th>
             <td>{{ reservation.accommodationId }}</td>
-            <td>{{ reservation.customerEmail }}</td>
-            <td>{{ reservation.reservationDate.from.dateTimeImmutable | localizeddate() }}</td>
-            <td>{{ reservation.reservationDate.to.dateTimeImmutable | localizeddate  }}</td>
+            <td>{{ reservation.customer.email }}</td>
+            <td>{{ reservation.reservationDate.from.dateTimeImmutable | localizeddate('medium', 'none') }}</td>
+            <td>{{ reservation.reservationDate.to.dateTimeImmutable | localizeddate('medium', 'none')  }}</td>
         </tr>
         {% endfor %}
         </tbody>

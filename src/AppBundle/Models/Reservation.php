@@ -12,12 +12,21 @@ class Reservation
     private $customerEmail;
     private $reservationDate;
 
-    public function __construct($accommodationId, $customerEmail, ReservationDate $reservationDate)
+    public static function fromReservationRequest(ReservationRequest $reservationRequest)
     {
-        $this->id = uniqid();
-        $this->accommodationId = $accommodationId;
-        $this->customerEmail = $customerEmail;
-        $this->reservationDate = $reservationDate;
+        if (!$reservationRequest->isAccepted()) {
+
+            throw new \DomainException(sprintf(
+                'Cannot create a Reservation which has not been accepted yet, Reservation Request #%s',
+                $reservationRequest->getId()
+            ));
+        }
+
+        return new self(
+            $reservationRequest->getAccommodationId(),
+            $reservationRequest->getCustomer(),
+            $reservationRequest->getReservationDate()
+        );
     }
 
     public function getId(): string
@@ -38,5 +47,13 @@ class Reservation
     public function getReservationDate(): ReservationDate
     {
         return $this->reservationDate;
+    }
+
+    private function __construct($accommodationId, Customer $customer, ReservationDate $reservationDate)
+    {
+        $this->id = uniqid();
+        $this->accommodationId = $accommodationId;
+        $this->customer = $customer;
+        $this->reservationDate = $reservationDate;
     }
 }

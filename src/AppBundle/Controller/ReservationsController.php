@@ -2,8 +2,10 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Models\Customer;
 use AppBundle\Models\Reservation;
 use AppBundle\Models\ReservationDate;
+use AppBundle\Models\ReservationRequest;
 use AppBundle\Models\UtcDateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -21,20 +23,16 @@ class ReservationsController extends Controller
         if ($request->isMethod('POST')) {
             if (!empty($customerEmail)) {
 
-                $reservation = new Reservation(
+                $reservationRequest = new ReservationRequest(
                     $accommodationId,
-                    $customerEmail,
+                    new Customer($customerEmail),
                     new ReservationDate(
                         UtcDateTime::createFromFormat('Y-m-d H:i:s', sprintf('%s 00:00:00', $dateFrom)),
                         UtcDateTime::createFromFormat('Y-m-d H:i:s', sprintf('%s 23:59:59', $dateTo))
                     )
                 );
-                
-                $this->get('repositories.reservations')->save($reservation);
 
-                $message = $this->get('app.mailer.message_factory')
-                    ->createBookingConfirmationMessage($customerEmail, $accommodationId);
-                $this->get('app.mailer')->send($message);
+                $this->get('reservations')->requestReservation($reservationRequest);
 
                 return new RedirectResponse($this->generateUrl('public.reservation_confirmed'));
             }
@@ -54,6 +52,18 @@ class ReservationsController extends Controller
         return $this->render('@App/Reservations/reservationConfirmation.html.twig');
     }
 
+    public function listReservationRequestsAction(Request $request)
+    {
+        $reservationRequests = $this->get('repositories.reservation_requests')->findAll();
+
+        return $this->render(
+            '@App/Reservations/reservationRequestsList.html.twig',
+            [
+                'reservationRequests' => $reservationRequests,
+            ]
+        );
+    }
+
     public function listReservationsAction(Request $request)
     {
         $reservations = $this->get('repositories.reservations')->findAll();
@@ -64,5 +74,36 @@ class ReservationsController extends Controller
                 'reservations' => $reservations,
             ]
         );
+    }
+
+    public function acceptReservationRequestAction(Request $request)
+    {
+        $reservationRequest = $this->get('repositories.reservation_requests')
+            ->findById($request->get('reservationRequestId'))
+        ;
+
+        $this->get('reservations')->acceptRequest($reservationRequest);
+
+        $this->addFlash(
+            'info',
+            sprintf('La demande de réservation #%s a bien été acceptée', $reservationRequest->getId())
+        );
+
+        return new RedirectResponse($this->generateUrl('admin.reservation_requests'));
+    }
+
+    public function refuseReservationRequestAction(Request $request)
+    {
+        $reservationRequest = $this->get('repositories.reservation_requests')
+            ->findById($request->get('reservationRequestId'))
+        ;
+        $this->get('reservations')->refuseRequest($reservationRequest);
+
+        $this->addFlash(
+            'info',
+            sprintf('La demande de réservation #%s a bien été refusée', $reservationRequest->getId())
+        );
+
+        return new RedirectResponse($this->generateUrl('admin.reservation_requests'));
     }
 }

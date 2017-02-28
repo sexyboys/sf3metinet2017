@@ -19,6 +19,18 @@
             <argument type="service" id="doctrine.dbal.default_connection" />
         </service>
 
+        <service id="repositories.reservation_requests" alias="repositories.reservation_requests.dbal" />
+        <service id="repositories.reservation_requests.dbal" class="AppBundle\Repositories\DbalReservationRequestRepository">
+            <argument type="service" id="doctrine.dbal.default_connection" />
+        </service>
+
+        <service id="reservations" class="AppBundle\Services\ReservationService">
+            <argument type="service" id="repositories.reservations" />
+            <argument type="service" id="repositories.reservation_requests" />
+            <argument type="service" id="app.mailer" />
+            <argument type="service" id="app.mailer.message_factory" />
+        </service>
+
         <service id="app.mailer" alias="app.mailer.fake" />
 
         <service id="app.mailer.fake" class="AppBundle\Services\FakeMailer">
