@@ -2,6 +2,8 @@
 
 namespace AppBundle\Models;
 
+use Money\Money;
+
 /**
  * @author Boris Guéry <guery.b@gmail.com>
  */
@@ -14,7 +16,7 @@ class Accommodation
     private $description;
     private $photoUrl;
 
-    public function __construct(int $pricePerNight, int $flatSize, string $location,
+    public function __construct(Money $pricePerNight, FlatSize $flatSize, Location $location,
         string $description, string $photoUrl)
     {
         $this->id = uniqid();
@@ -30,17 +32,17 @@ class Accommodation
         return $this->id;
     }
 
-    public function getPricePerNight()
+    public function getPricePerNight(): Money
     {
         return $this->pricePerNight;
     }
 
-    public function getFlatSize()
+    public function getFlatSize(): FlatSize
     {
         return $this->flatSize;
     }
 
-    public function getLocation()
+    public function getLocation(): Location
     {
         return $this->location;
     }

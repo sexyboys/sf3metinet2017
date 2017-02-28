@@ -11,24 +11,14 @@ class InMemoryAccommodationRepository implements AccommodationRepository
 {
     private $accommodations = [];
 
-    public function __construct()
+    public function __construct(array $accommodations)
     {
-        $this->accommodations =             [
-            new Accommodation(
-                8000,
-                50,
-                'rue de Chabrol, 75010, Paris',
-                'En plein coeur de Paris !',
-                'http://www.parisrues.com/imagesold/10/101ruedechabrol02.jpg'
-            ),
-            new Accommodation(
-                5000,
-                24,
-                'rue Saint-Maur, 75011, Paris',
-                'Un quartier très calme, à deux pas d\'Oberkampf',
-                'http://www.parisrues.com/imagesold/10/101ruesaintmaur04.jpg'
-            ),
-        ];
+        $this->accommodations = $accommodations;
+    }
+
+    public function save(Accommodation $accommodation)
+    {
+        $this->accommodations[$accommodation->getId()] = $accommodation;
     }
 
     public function findAll()

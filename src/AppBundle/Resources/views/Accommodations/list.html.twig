@@ -9,12 +9,13 @@
         <div class="row">
             {% for accommodation in accommodations %}
             <div class="col-md-6">
-                <strong>{{ accommodation.location }}, à partir de <span class="price">{{ accommodation.pricePerNight }}</span></strong>
+                <strong>À partir de <span class="price">{{ accommodation.pricePerNight | money_localized_format }}</span></strong>
                 <p>{{ accommodation.description }}</p>
                 <dl>
                     <dt>Surface</dt>
                     <dd>{{ accommodation.flatSize }}</dd>
                 </dl>
+                <address>{{ accommodation.location | nl2br }}</address>
                 <p><img src="{{ accommodation.photoUrl }}" width="100%" /></p>
                 <a href="{{ path('reserve_accommodation', {'accommodationId': accommodation.id}) }}" class="btn btn-primary">Faire une demande de réservation</a>
             </div>
