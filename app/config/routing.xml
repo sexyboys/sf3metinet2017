@@ -8,12 +8,12 @@
         <default key="_controller">AppBundle:Accommodations:list</default>
     </route>
 
-    <route id="booking_confirmation" path="/book/confirmed">
-        <default key="_controller">AppBundle:Booking:bookingConfirmation</default>
+    <route id="reservation_confirmed" path="/reservation/confirmed">
+        <default key="_controller">AppBundle:Reservations:reservationConfirmed</default>
     </route>
 
-    <route id="book_accommodation" path="/book/{accommodationId}">
-        <default key="_controller">AppBundle:Booking:book</default>
+    <route id="reserve_accommodation" path="/reserve/{accommodationId}">
+        <default key="_controller">AppBundle:Reservations:reserve</default>
     </route>
 
 </routes>

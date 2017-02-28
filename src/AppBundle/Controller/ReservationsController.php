@@ -6,9 +6,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
-class BookingController extends Controller
+class ReservationsController extends Controller
 {
-    public function bookAction(Request $request)
+    public function reserveAction(Request $request)
     {
         $to = $request->get('email');
         $accommodationId = $request->get('accommodationId');
@@ -17,20 +17,20 @@ class BookingController extends Controller
             if (!empty($to)) {
 
                 $message = $this->get('app.mailer.message_factory')
-                    ->createBookingConfirmationMessage($to, $accommodationId)
-                ;
+                    ->createBookingConfirmationMessage($to, $accommodationId);
                 $this->get('app.mailer')->send($message);
 
-                return new RedirectResponse($this->generateUrl('booking_confirmation'));
+                return new RedirectResponse($this->generateUrl('reservation_confirmed'));
             }
-            
-            $this->addFlash('danger', 'Votre e-mail est invalide');
 
-        return $this->render('@App/Booking/book.html.twig', ['email' => $to]);
+            $this->addFlash('danger', 'Votre e-mail est invalide');
+        }
+
+        return $this->render('@App/Reservations/reserve.html.twig', ['email' => $to]);
     }
 
-    public function bookingConfirmationAction()
+    public function reservationConfirmedAction()
     {
-        return $this->render('@App/Booking/bookConfirmation.html.twig');
+        return $this->render('@App/Reservations/reservationConfirmation.html.twig');
     }
 }
