@@ -5,13 +5,24 @@ security:
     # http://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
     providers:
         in_memory:
-            memory: ~
+            memory:
+                users:
+                    admin:
+                        password: "foobar"
+                        roles: [ROLE_ADMIN]
+    encoders:
+        Symfony\Component\Security\Core\User\User: plaintext
 
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+
+        admin:
+            pattern: ^/admin
+            http_basic:
+                realm: "Admin area"
 
         main:
             anonymous: ~
@@ -22,3 +33,11 @@ security:
 
             # form_login: ~
             # http://symfony.com/doc/current/cookbook/security/form_login_setup.html
+
+    role_hierarchy:
+        ROLE_ADMIN: [ROLE_USER]
+
+    access_control:
+      -
+          path: ^/admin
+          roles: [ROLE_ADMIN]
