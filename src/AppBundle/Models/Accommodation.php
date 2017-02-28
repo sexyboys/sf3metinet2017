@@ -7,6 +7,7 @@ namespace AppBundle\Models;
  */
 class Accommodation
 {
+    private $id;
     private $pricePerNight;
     private $flatSize;
     private $location;
@@ -16,11 +17,17 @@ class Accommodation
     public function __construct(int $pricePerNight, int $flatSize, string $location,
         string $description, string $photoUrl)
     {
+        $this->id = uniqid();
         $this->pricePerNight = $pricePerNight;
         $this->flatSize = $flatSize;
         $this->location = $location;
         $this->description = $description;
         $this->photoUrl = $photoUrl;
+    }
+
+    public function getId()
+    {
+        return $this->id;
     }
 
     public function getPricePerNight()

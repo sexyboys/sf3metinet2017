@@ -8,6 +8,14 @@
         <default key="_controller">AppBundle:Accommodations:list</default>
     </route>
 
+    <route id="booking_confirmation" path="/book/confirmed">
+        <default key="_controller">AppBundle:Booking:bookingConfirmation</default>
+    </route>
+
+    <route id="book_accommodation" path="/book/{accommodationId}">
+        <default key="_controller">AppBundle:Booking:book</default>
+    </route>
+
 </routes>
 
 

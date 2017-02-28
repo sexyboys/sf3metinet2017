@@ -16,7 +16,7 @@
                     <dd>{{ accommodation.flatSize }}</dd>
                 </dl>
                 <p><img src="{{ accommodation.photoUrl }}" width="100%" /></p>
-                <a href="#">Faire une demande de réservation</a>
+                <a href="{{ path('book_accommodation', {'accommodationId': accommodation.id}) }}" class="btn btn-primary">Faire une demande de réservation</a>
             </div>
             {% endfor %}
         </div>

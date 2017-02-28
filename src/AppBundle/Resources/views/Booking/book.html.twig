@@ -1,0 +1,13 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+    <div class="col-md-3">
+    <form method="post">
+        <div class="form-group">
+            <label for="email">Votre e-mail</label>
+            <input type="text" class="form-control" name="email" id="email" value="{{ email }}">
+        </div>
+        <button type="submit" class="btn btn-primary">Valider ma réservation</button>
+    </form>
+    </div>
+{% endblock %}

@@ -9,7 +9,14 @@
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
     <body>
-    <div class="container">
+    <div class="container" style="margin-top: 1em">
+        {% if app.session.flashbag.peekAll|length > 0 %}
+            {% for type, messages in app.session.flashbag.all %}
+                {% for message in messages %}
+                    <p class="alert alert-{{ type ? type : '' }}">{{ message }}</p>
+                {% endfor %}
+            {% endfor %}
+        {% endif %}
         {% block body %}{% endblock %}
     </div>
     <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
