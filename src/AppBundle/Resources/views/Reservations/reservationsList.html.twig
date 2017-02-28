@@ -1,0 +1,26 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+    <table class="table">
+        <thead class="thead-inverse">
+        <tr>
+            <th>Reservation Id</th>
+            <th>Accommodation Id</th>
+            <th>Customer E-mail</th>
+            <th>Check-in</th>
+            <th>Check-out</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for reservation in reservations %}
+        <tr>
+            <th scope="row">{{ reservation.id }}</th>
+            <td>{{ reservation.accommodationId }}</td>
+            <td>{{ reservation.customerEmail }}</td>
+            <td>{{ reservation.reservationDate.from.dateTimeImmutable | localizeddate() }}</td>
+            <td>{{ reservation.reservationDate.to.dateTimeImmutable | localizeddate  }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

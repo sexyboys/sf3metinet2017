@@ -17,7 +17,7 @@
                 </dl>
                 <address>{{ accommodation.location | nl2br }}</address>
                 <p><img src="{{ accommodation.photoUrl }}" width="100%" /></p>
-                <a href="{{ path('reserve_accommodation', {'accommodationId': accommodation.id}) }}" class="btn btn-primary">Faire une demande de réservation</a>
+                <a href="{{ path('public.reserve_accommodation', {'accommodationId': accommodation.id}) }}" class="btn btn-primary">Faire une demande de réservation</a>
             </div>
             {% endfor %}
         </div>

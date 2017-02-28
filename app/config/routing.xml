@@ -4,16 +4,20 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
-    <route id="homepage" path="/">
+    <route id="public.homepage" path="/">
         <default key="_controller">AppBundle:Accommodations:list</default>
     </route>
 
-    <route id="reservation_confirmed" path="/reservation/confirmed">
+    <route id="public.reservation_confirmed" path="/reservation/confirmed">
         <default key="_controller">AppBundle:Reservations:reservationConfirmed</default>
     </route>
 
-    <route id="reserve_accommodation" path="/reserve/{accommodationId}">
+    <route id="public.reserve_accommodation" path="/reserve/{accommodationId}">
         <default key="_controller">AppBundle:Reservations:reserve</default>
+    </route>
+
+    <route id="admin.reservations" path="/admin/reservations">
+        <default key="_controller">AppBundle:Reservations:listReservations</default>
     </route>
 
 </routes>
