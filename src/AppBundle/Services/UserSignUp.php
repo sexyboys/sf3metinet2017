@@ -25,14 +25,14 @@ class UserSignUp
     {
         $salt = base64_encode(random_bytes(16));
         $encodedPassword = $this->passwordEncoder->encodePassword(
-            $signUp->getPlainTextPassword(),
+            $signUp->plainTextPassword,
             $salt
         );
 
         $customer = new Customer(
-            $signUp->getFirstName(),
-            $signUp->getLastName(),
-            $signUp->getEmail(),
+            $signUp->firstName,
+            $signUp->lastName,
+            $signUp->email,
             $encodedPassword,
             $salt
         );

@@ -5,6 +5,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Forms\Types\SignIn;
 use AppBundle\Models\UserSignUp;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -15,14 +16,17 @@ class CustomerAccountController extends Controller
 {
     public function signInAction(Request $request)
     {
+        $form = $this->createForm(SignIn::class);
+
         $authenticationUtils = $this->get('security.authentication_utils');
         $error = $authenticationUtils->getLastAuthenticationError();
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        return $this->render('@App/CustomerAccount/signIn.html.twig', array(
+        return $this->render('@App/CustomerAccount/signIn.html.twig', [
             'lastUsername' => $lastUsername,
-            'error'        => $error,
-        ));
+            'error' => $error,
+            'signInForm' => $form->createView(),
+        ]);
     }
 
     public function signUpAction(Request $request)
@@ -45,6 +49,8 @@ class CustomerAccountController extends Controller
             return new RedirectResponse('/');
         }
 
-        return $this->render('@App/CustomerAccount/signUp.html.twig', []);
+        return $this->render(
+            '@App/CustomerAccount/signUp.html.twig'
+        );
     }
 }
