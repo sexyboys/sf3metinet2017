@@ -6,6 +6,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Forms\Types\SignIn;
+use AppBundle\Forms\Types\SignUp;
 use AppBundle\Models\UserSignUp;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -31,26 +32,33 @@ class CustomerAccountController extends Controller
 
     public function signUpAction(Request $request)
     {
+        $form = $this->createForm(SignUp::class, new UserSignUp());
+
         if ($request->isMethod('post')) {
-            $firstName = $request->get('firstName');
-            $lastName = $request->get('lastName');
-            $email = $request->get('email');
-            $plainTextPassword = $request->get('password');
 
-            $signUp = new UserSignUp($firstName, $lastName, $email, $plainTextPassword);
-            $this->get('sign_up')->signUp($signUp);
+            $form->handleRequest($request);
 
-            $customer = $this->get('repositories.customers')->loadUserByUsername($email);
+            if ($form->isSubmitted() && $form->isValid()) {
 
-            $token = new UsernamePasswordToken($customer, null, 'main', ['ROLE_USER']);
-            $this->get('security.token_storage')->setToken($token);
-            $this->get('session')->set('_security_main', serialize($token));
+                $signUp = $form->getData();
 
-            return new RedirectResponse('/');
+                $this->get('sign_up')->signUp($signUp);
+
+                $customer = $this->get('repositories.customers')
+                    ->loadUserByUsername($signUp->email)
+                ;
+
+                $token = new UsernamePasswordToken($customer, null, 'main', ['ROLE_USER']);
+                $this->get('security.token_storage')->setToken($token);
+                $this->get('session')->set('_security_main', serialize($token));
+
+                return new RedirectResponse('/');
+            }
         }
 
         return $this->render(
-            '@App/CustomerAccount/signUp.html.twig'
+            '@App/CustomerAccount/signUp.html.twig',
+            ['signUpForm' => $form->createView()]
         );
     }
 }

@@ -11,5 +11,24 @@
                 <option name="min">3</option>
             </constraint>
         </property>
+        <property name="lastName">
+            <constraint name="NotBlank" />
+            <constraint name="Length">
+                <option name="min">3</option>
+            </constraint>
+        </property>
+        <property name="email">
+            <constraint name="Email" />
+        </property>
+        <property name="plainTextPassword">
+            <constraint name="NotBlank" />
+            <constraint name="Length">
+                <option name="min">8</option>
+            </constraint>
+            <constraint name="Regex">
+                <option name="pattern">/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/</option>
+                <option name="message">user_sign_up.form.password.policy.error_message</option>
+            </constraint>
+        </property>
     </class>
 </constraint-mapping>
