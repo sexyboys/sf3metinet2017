@@ -14,7 +14,7 @@ class Reservation
 
     public static function fromReservationRequest(ReservationRequest $reservationRequest)
     {
-        if (!$reservationRequest->isAccepted()) {
+        if (ReservationRequest::ACCEPTED !== $reservationRequest->getStatus()) {
 
             throw new \DomainException(sprintf(
                 'Cannot create a Reservation which has not been accepted yet, Reservation Request #%s',
