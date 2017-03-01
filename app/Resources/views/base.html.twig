@@ -10,6 +10,22 @@
     </head>
     <body>
     <div class="container" style="margin-top: 1em">
+
+        {% if is_granted('ROLE_ADMIN') %}
+        <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item {{ app.request.attributes.get('_route') == 'admin.reservation_requests' ? 'active' : '' }}">
+                        <a class="nav-link" href="{{ path('admin.reservation_requests') }}">Requests</a>
+                    </li>
+                    <li class="nav-item {{ app.request.attributes.get('_route') == 'admin.reservations' ? 'active' : '' }}">
+                        <a class="nav-link" href="{{ path('admin.reservations') }}">Reservations</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        {% endif %}
+
         {% if app.session.flashbag.peekAll|length > 0 %}
             {% for type, messages in app.session.flashbag.all %}
                 {% for message in messages %}
