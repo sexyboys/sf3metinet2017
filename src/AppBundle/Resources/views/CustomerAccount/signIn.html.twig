@@ -10,14 +10,13 @@
         {{ form_start(signInForm, {'action': path('public.sign_in')}) }}
         <div class="form-group">
             {{ form_label(signInForm.username) }}
-            {{ form_widget(signInForm.username, {'attr': {'class': 'form-control'}}) }}
+            <input class="form-control"  id="{{ signInForm.username.vars.id }}" name="_username" value="{{ signInForm.username.vars.value }}" />
             {{ form_label(signInForm.password) }}
-            {{ form_widget(signInForm.password, {'attr': {'class': 'form-control'}}) }}
+            <input class="form-control" id="{{ signInForm.password.vars.id }}" name="_password" value="{{ signInForm.password.vars.value }}" />
         </div>
         <div class="form-group">
             <a  href="{{ path('public.customer.sign_up') }}" class="btn btn-info">Sign up</a>
             {{ form_widget(signInForm.signin, {'attr': {'class': 'btn btn-primary'}}) }}
         </div>
-        {{ form_end(signInForm) }}
     </div>
 {% endblock %}
