@@ -8,20 +8,19 @@
         <property name="firstName">
             <constraint name="NotBlank" />
             <constraint name="Length">
-                <option name="min">3</option>
+                <option name="min">1</option>
             </constraint>
         </property>
         <property name="lastName">
             <constraint name="NotBlank" />
             <constraint name="Length">
-                <option name="min">3</option>
+                <option name="min">1</option>
             </constraint>
         </property>
         <property name="email">
             <constraint name="Email" />
         </property>
         <property name="plainTextPassword">
-            <constraint name="NotBlank" />
             <constraint name="Length">
                 <option name="min">8</option>
             </constraint>
