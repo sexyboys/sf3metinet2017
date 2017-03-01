@@ -24,6 +24,22 @@
             <argument type="service" id="doctrine.dbal.default_connection" />
         </service>
 
+        <service id="repositories.customers" alias="repositories.customers.dbal" />
+        <service id="repositories.customers.dbal" class="AppBundle\Repositories\DbalCustomerRepository">
+            <argument type="service" id="doctrine.dbal.default_connection" />
+        </service>
+        <service id="security.customers_provider" alias="repositories.customers" />
+
+        <service id="sign_up" class="AppBundle\Services\UserSignUp">
+            <argument type="service">
+                <service class="Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface">
+                    <factory service="security.encoder_factory" method="getEncoder" class="Symfony\Component\Security\Core\Encoder\EncoderFactory" />
+                    <argument>AppBundle\Models\Customer</argument>
+                </service>
+            </argument>
+            <argument type="service" id="repositories.customers" />
+        </service>
+
         <service id="reservations" class="AppBundle\Services\ReservationService">
             <argument type="service" id="repositories.reservations" />
             <argument type="service" id="repositories.reservation_requests" />

@@ -1,0 +1,22 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+    {% if error %}
+        <p class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</p>
+    {% endif %}
+
+    <div class="col-md-3">
+        <form action="{{ path('public.sign_in') }}" method="post">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" class="form-control" name="_username" id="username" value="{{ lastUsername }}">
+                <label for="to">Password</label>
+                <input type="password" class="form-control" name="_password" id="password" value="">
+            </div>
+            <div class="form-group">
+                <a  href="{{ path('public.customer.sign_up') }}" class="btn btn-info">Sign up</a>
+                <button type="submit" class="btn btn-primary">Sign in</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}

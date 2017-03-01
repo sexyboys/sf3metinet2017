@@ -4,14 +4,18 @@ security:
 
     # http://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
     providers:
-        in_memory:
+        admins:
             memory:
                 users:
                     admin:
                         password: "foobar"
                         roles: [ROLE_ADMIN]
+        customers:
+            id: security.customers_provider
+
     encoders:
         Symfony\Component\Security\Core\User\User: plaintext
+        AppBundle\Models\Customer: plaintext
 
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
@@ -21,18 +25,18 @@ security:
 
         admin:
             pattern: ^/admin
+            provider: admins
             http_basic:
                 realm: "Admin area"
 
         main:
             anonymous: ~
-            # activate different ways to authenticate
-
-            # http_basic: ~
-            # http://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
-
-            # form_login: ~
-            # http://symfony.com/doc/current/cookbook/security/form_login_setup.html
+            provider: customers
+            form_login:
+                login_path: public.sign_in
+                check_path: public.sign_in
+            logout:
+                path: /signout
 
     role_hierarchy:
         ROLE_ADMIN: [ROLE_USER]
@@ -40,4 +44,10 @@ security:
     access_control:
       -
           path: ^/admin
-          roles: [ROLE_ADMIN]
+          roles: ROLE_ADMIN
+      -
+          path: ^/reserve
+          roles: ROLE_USER
+      -
+          path: ^/signin,
+          roles: IS_AUTHENTICATED_ANONYMOUSLY

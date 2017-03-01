@@ -3,7 +3,6 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Models\Customer;
-use AppBundle\Models\Reservation;
 use AppBundle\Models\ReservationDate;
 use AppBundle\Models\ReservationRequest;
 use AppBundle\Models\UtcDateTime;
@@ -15,33 +14,28 @@ class ReservationsController extends Controller
 {
     public function reserveAction(Request $request)
     {
-        $customerEmail = $request->get('email');
+        /** @var Customer $customer */
+        $customer = $this->getUser();
         $accommodationId = $request->get('accommodationId');
         $dateFrom = $request->get('from');
         $dateTo = $request->get('to');
 
         if ($request->isMethod('POST')) {
-            if (!empty($customerEmail)) {
+            $reservationRequest = new ReservationRequest(
+                $accommodationId,
+                $customer,
+                new ReservationDate(
+                    UtcDateTime::createFromFormat('Y-m-d H:i:s', sprintf('%s 00:00:00', $dateFrom)),
+                    UtcDateTime::createFromFormat('Y-m-d H:i:s', sprintf('%s 23:59:59', $dateTo))
+                )
+            );
 
-                $reservationRequest = new ReservationRequest(
-                    $accommodationId,
-                    new Customer($customerEmail),
-                    new ReservationDate(
-                        UtcDateTime::createFromFormat('Y-m-d H:i:s', sprintf('%s 00:00:00', $dateFrom)),
-                        UtcDateTime::createFromFormat('Y-m-d H:i:s', sprintf('%s 23:59:59', $dateTo))
-                    )
-                );
+            $this->get('reservations')->requestReservation($reservationRequest);
 
-                $this->get('reservations')->requestReservation($reservationRequest);
-
-                return new RedirectResponse($this->generateUrl('public.reservation_confirmed'));
-            }
-
-            $this->addFlash('danger', 'Votre e-mail est invalide');
+            return new RedirectResponse($this->generateUrl('public.reservation_confirmed'));
         }
 
         return $this->render('@App/Reservations/reserve.html.twig', [
-            'email' => $customerEmail,
             'from' => $dateFrom,
             'to' => $dateTo,
         ]);

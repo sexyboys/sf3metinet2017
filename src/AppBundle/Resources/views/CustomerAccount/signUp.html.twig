@@ -1,0 +1,21 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+    <div class="col-md-3">
+        <form action="{{ path('public.customer.sign_up') }}" method="post">
+            <div class="form-group">
+                <label for="email">E-mail</label>
+                <input type="email" class="form-control" name="email" id="email" value="">
+                <label for="firstName">First Name</label>
+                <input type="text" class="form-control" name="firstName" id="firstName" value="">
+                <label for="lastName">Last Name</label>
+                <input type="text" class="form-control" name="lastName" id="lastName" value="">
+                <label for="to">Password</label>
+                <input type="password" class="form-control" name="password" id="password" value="">
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Sign up</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}

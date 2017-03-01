@@ -16,6 +16,16 @@
         <default key="_controller">AppBundle:Reservations:reserve</default>
     </route>
 
+    <route id="public.sign_in" path="/signin">
+        <default key="_controller">AppBundle:CustomerAccount:signIn</default>
+    </route>
+
+    <route id="public.sign_out" path="/signout" />
+
+    <route id="public.customer.sign_up" path="/signup">
+        <default key="_controller">AppBundle:CustomerAccount:signUp</default>
+    </route>
+
     <route id="admin.reservation_requests" path="/admin/reservations/requests">
         <default key="_controller">AppBundle:Reservations:listReservationRequests</default>
     </route>
