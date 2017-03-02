@@ -8,6 +8,7 @@ namespace AppBundle\Controller;
 use AppBundle\Forms\Types\CustomerSignUp;
 use AppBundle\Forms\Types\SignIn;
 use AppBundle\Models\CustomerSignUp as CustomerSignUpDto;
+use AppBundle\Repositories\CustomerNotFound;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -59,6 +60,56 @@ class CustomerAccountController extends Controller
         return $this->render(
             '@App/CustomerAccount/signUp.html.twig',
             ['signUpForm' => $form->createView()]
+        );
+    }
+
+    public function forgottenPasswordAction(Request $request)
+    {
+        if ($request->isMethod('post')) {
+            try {
+                $customer = $this->get('repositories.customers')->findByEmail($request->get('email'));
+                $this->get('password_reset')->requestPasswordReset($customer);
+            } catch (CustomerNotFound $e) {
+//                 simply ignore and let the user think we sent an e-mail
+            }
+            
+            return $this->redirectToRoute('public.customer.forgotten_password.confirmed');
+
+        }
+
+        return $this->render(
+            '@App/CustomerAccount/forgottenPassword.html.twig'
+        );
+    }
+
+    public function forgottenPasswordConfirmedAction(Request $request)
+    {
+        return $this->render(
+            '@App/CustomerAccount/forgottenPasswordConfirmation.html.twig'
+        );
+    }
+
+    public function resetPasswordAction(Request $request)
+    {
+        $token = $request->get('token');
+        if ($request->isMethod('post')) {
+
+            $plainTextPassword = $request->get('newPassword');
+
+            $this->get('password_reset')->resetPassword($token, $plainTextPassword);
+
+            $this->addFlash(
+                'info',
+                $this->get('translator')->trans(
+                    'Votre mot de passe a bien été mis à jour, vous pouvez à présent vous connecter'
+                )
+            );
+
+            return $this->redirectToRoute('public.customer.sign_in');
+        }
+
+        return $this->render(
+            '@App/CustomerAccount/resetPassword.html.twig'
         );
     }
 }

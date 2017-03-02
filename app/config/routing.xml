@@ -32,6 +32,22 @@
         <default key="_controller">AppBundle:CustomerAccount:signIn</default>
     </route>
 
+    <route id="public.customer.forgotten_password" path="/forgotten-password">
+        <default key="_controller">AppBundle:CustomerAccount:forgottenPassword</default>
+    </route>
+
+    <route id="public.customer.forgotten_password.confirmed" path="/forgotten-password/confirmed">
+        <default key="_controller">AppBundle:CustomerAccount:forgottenPasswordConfirmed</default>
+    </route>
+
+    <route id="public.customer.reset_password.confirmed" path="/reset-password/confirmed">
+        <default key="_controller">AppBundle:CustomerAccount:resetPasswordConfirmed</default>
+    </route>
+
+    <route id="public.customer.reset_password" path="/reset-password/{token}">
+        <default key="_controller">AppBundle:CustomerAccount:resetPassword</default>
+    </route>
+
     <route id="public.sign_out" path="/signout" />
 
     <route id="public.customer.sign_up" path="/signup">

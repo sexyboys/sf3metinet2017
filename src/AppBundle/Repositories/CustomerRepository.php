@@ -11,5 +11,7 @@ use AppBundle\Models\Customer;
 interface CustomerRepository
 {
     public function save(Customer $customer);
-    public function findById($id);
+    public function findById($id): Customer;
+    public function findByEmail($email): Customer;
+    public function findByPasswordResetToken($token): Customer;
 }

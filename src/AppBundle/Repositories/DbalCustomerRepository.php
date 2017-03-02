@@ -28,16 +28,19 @@ INSERT INTO `customers`
   (
    `id`,
    `serializedCustomer`,
-   `username`
+   `username`,
+   `passwordResetToken`
    ) VALUES (
     :id, 
     :serializedCustomer,
-    :username
+    :username,
+    :passwordResetToken
   )
   ON DUPLICATE KEY 
     UPDATE 
       serializedCustomer = :serializedCustomer,
-      username = :username
+      username = :username,
+      passwordResetToken = :passwordResetToken
     ;
 SQL;
 
@@ -46,10 +49,11 @@ SQL;
             'id' => $customer->getId(),
             'serializedCustomer' => serialize($customer),
             'username' => $customer->getUsername(),
+            'passwordResetToken' => $customer->getPasswordResetToken(),
         ]);
     }
 
-    public function findById($customerId)
+    public function findById($customerId): Customer
     {
         $stmt = $this->dbal->prepare('SELECT * FROM customers WHERE id = :id LIMIT 1;');
         $stmt->execute(['id' => $customerId]);
@@ -58,7 +62,37 @@ SQL;
 
         if (count($rows) < 1) {
 
-            throw new \DomainException(sprintf('Customer #%s not found', $customerId));
+            throw new CustomerNotFound(sprintf('Customer #%s not found', $customerId));
+        }
+
+        return unserialize($rows[0]['serializedCustomer']);
+    }
+
+    public function findByEmail($email): Customer
+    {
+        $stmt = $this->dbal->prepare('SELECT * FROM customers WHERE username = :username LIMIT 1;');
+        $stmt->execute(['username' => $email]);
+
+        $rows = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+        if (count($rows) < 1) {
+
+            throw new CustomerNotFound(sprintf('Customer #%s not found', $email));
+        }
+
+        return unserialize($rows[0]['serializedCustomer']);
+    }
+
+    public function findByPasswordResetToken($token): Customer
+    {
+        $stmt = $this->dbal->prepare('SELECT * FROM customers WHERE passwordResetToken = :passwordResetToken LIMIT 1;');
+        $stmt->execute(['passwordResetToken' => $token]);
+
+        $rows = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+        if (count($rows) < 1) {
+
+            throw new CustomerNotFound(sprintf('Customer #%s not found', $token));
         }
 
         return unserialize($rows[0]['serializedCustomer']);

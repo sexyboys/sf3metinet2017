@@ -16,6 +16,8 @@
         <div class="form-group">
             {{ form_widget(signInForm.signin, {'attr': {'class': 'btn btn-primary'}}) }}
             <a  href="{{ path('public.customer.sign_up') }}" class="btn btn-info">Sign up as Customer</a>
+            <br />
+            <p><a href="{{ path('public.customer.forgotten_password') }}">J'ai oublié mon mot de passe</a></p>
         </div>
     </div>
 {% endblock %}

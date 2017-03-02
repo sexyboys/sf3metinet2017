@@ -15,6 +15,7 @@ class Customer implements UserInterface
     private $lastName;
     private $encodedPassword;
     private $passwordSalt;
+    private $passwordReset;
 
     public function __construct(string $firstName, string $lastName,
         string $email, string $encodedPassword, string $passwordSalt)
@@ -27,9 +28,38 @@ class Customer implements UserInterface
         $this->passwordSalt = $passwordSalt;
     }
 
+    public function requestPasswordReset(PasswordReset $passwordReset)
+    {
+        $this->passwordReset = $passwordReset;
+    }
+
+    public function resetPassword($token, $newEncodedPassword)
+    {
+        if (!$this->passwordReset instanceof PasswordReset) {
+
+            throw UnableToResetPassword::noRequestHasBeenMade();
+        }
+
+        if (!$this->passwordReset->tokenEquals($token)) {
+
+            throw UnableToResetPassword::tokenMismatch($token, $this->passwordReset->getToken());
+        }
+
+        $this->passwordReset = null;
+        $this->encodedPassword = $newEncodedPassword;
+    }
+
     public function getId()
     {
         return $this->id;
+    }
+
+    public function getPasswordResetToken(): ?string
+    {
+        return ($this->passwordReset instanceof PasswordReset)
+            ? $this->passwordReset->getToken()
+            : null
+        ;
     }
 
     public function getEmail(): string
