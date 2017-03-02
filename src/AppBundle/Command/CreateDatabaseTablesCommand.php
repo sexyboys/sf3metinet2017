@@ -37,9 +37,16 @@ class CreateDatabaseTablesCommand extends ContainerAwareCommand
   `serializedReservationRequest` blob NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;',
-            'customers' => 'CREATE TABLE `customers` (
+            'customers' => 'CREATE TABLE IF NOT EXISTS `customers` (
   `id` varchar(255) NOT NULL DEFAULT \'\',
   `serializedCustomer` blob NOT NULL,
+  `username` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `username` (`username`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;',
+            'hosts' => 'CREATE TABLE IF NOT EXISTS `hosts` (
+  `id` varchar(255) NOT NULL DEFAULT \'\',
+  `serializedHost` blob NOT NULL,
   `username` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`)

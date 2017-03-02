@@ -7,20 +7,22 @@ namespace AppBundle\Models;
 
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class Customer implements UserInterface
+class Host implements UserInterface
 {
     private $id;
     private $email;
+    private $phoneNumber;
     private $firstName;
     private $lastName;
     private $encodedPassword;
     private $passwordSalt;
 
     public function __construct(string $firstName, string $lastName,
-        string $email, string $encodedPassword, string $passwordSalt)
+        string $email, string $phoneNumber, string $encodedPassword, string $passwordSalt)
     {
         $this->id = uniqid();
         $this->email = $email;
+        $this->phoneNumber = $phoneNumber;
         $this->firstName = $firstName;
         $this->lastName = $lastName;
         $this->encodedPassword = $encodedPassword;
@@ -30,6 +32,11 @@ class Customer implements UserInterface
     public function getId()
     {
         return $this->id;
+    }
+
+    public function getPhoneNumber(): string
+    {
+        return $this->phoneNumber;
     }
 
     public function getEmail(): string
@@ -54,7 +61,7 @@ class Customer implements UserInterface
 
     public function getRoles()
     {
-        return ['ROLE_CUSTOMER'];
+        return ['ROLE_HOST'];
     }
 
     public function getPassword()

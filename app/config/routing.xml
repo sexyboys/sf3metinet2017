@@ -8,6 +8,18 @@
         <default key="_controller">AppBundle:Accommodations:list</default>
     </route>
 
+    <route id="public.hosts.accommodations.new" path="/hosts/accommodations/new">
+        <default key="_controller">AppBundle:Accommodations:new</default>
+    </route>
+
+    <route id="public.host.sign_in" path="/hosts/signin">
+        <default key="_controller">AppBundle:HostAccount:signIn</default>
+    </route>
+
+    <route id="public.host.sign_up" path="/hosts/signup">
+        <default key="_controller">AppBundle:HostAccount:signUp</default>
+    </route>
+
     <route id="public.reservation_confirmed" path="/reservation/confirmed">
         <default key="_controller">AppBundle:Reservations:reservationConfirmed</default>
     </route>
@@ -16,7 +28,7 @@
         <default key="_controller">AppBundle:Reservations:reserve</default>
     </route>
 
-    <route id="public.sign_in" path="/signin">
+    <route id="public.customer.sign_in" path="/signin">
         <default key="_controller">AppBundle:CustomerAccount:signIn</default>
     </route>
 

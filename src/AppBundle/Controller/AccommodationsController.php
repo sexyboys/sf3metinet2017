@@ -16,4 +16,8 @@ class AccommodationsController extends Controller
             'accommodations' => $accommodations,
         ]);
     }
+
+    public function newAction(Request $request)
+    {
+    }
 }

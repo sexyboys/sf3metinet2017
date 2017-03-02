@@ -1,0 +1,66 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+    <div class="col-md-6">
+        {{ form_start(signUpForm, {'action': path('public.host.sign_up')}) }}
+        <div class="form-group {{ signUpForm.firstName.vars.valid ?: 'has-danger' }}">
+            {{ form_label(signUpForm.firstName) }}
+            {{ form_widget(signUpForm.firstName, {'attr': {'class': 'form-control'}} ) }}
+            {% if not signUpForm.firstName.vars.valid %}
+            <ul>
+                {% for error in signUpForm.firstName.vars.errors %}
+                <p class="form-control-feedback">{{ error.message }}</p>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+        <div class="form-group {{ signUpForm.lastName.vars.valid ?: 'has-danger' }}">
+            {{ form_label(signUpForm.lastName) }}
+            {{ form_widget(signUpForm.lastName, {'attr': {'class': 'form-control'}} ) }}
+            {% if not signUpForm.lastName.vars.valid %}
+            <ul>
+            {% for error in signUpForm.lastName.vars.errors %}
+                <p class="form-control-feedback">{{ error.message }}</p>
+            {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+        <div class="form-group {{ signUpForm.phoneNumber.vars.valid ?: 'has-danger' }}">
+            {{ form_label(signUpForm.phoneNumber) }}
+            {{ form_widget(signUpForm.phoneNumber, {'attr': {'class': 'form-control'}} ) }}
+            {% if not signUpForm.phoneNumber.vars.valid %}
+                <ul>
+                    {% for error in signUpForm.phoneNumber.vars.errors %}
+                        <p class="form-control-feedback">{{ error.message }}</p>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div class="form-group {{ signUpForm.email.vars.valid ?: 'has-danger' }}">
+            {{ form_label(signUpForm.email) }}
+            {{ form_widget(signUpForm.email, {'attr': {'class': 'form-control'}} ) }}
+            {% if not signUpForm.email.vars.valid %}
+            <ul>
+            {% for error in signUpForm.email.vars.errors %}
+                <p class="form-control-feedback">{{ error.message }}</p>
+            {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+        <div class="form-group {{ signUpForm.password.vars.valid ?: 'has-danger' }}">
+            {{ form_label(signUpForm.password) }}
+            {{ form_widget(signUpForm.password, {'attr': {'class': 'form-control'}} ) }}
+            {% if not signUpForm.password.vars.valid %}
+            <ul>
+            {% for error in signUpForm.password.vars.errors %}
+                <p class="form-control-feedback">{{ error.message }}</p>
+            {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            {{ form_widget(signUpForm.signup, {'attr': {'class': 'btn btn-primary'}}) }}
+            {{ form_rest(signUpForm) }}
+        </div>
+    </div>
+{% endblock %}

@@ -5,15 +5,15 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Forms\Types\CustomerSignUp;
+use AppBundle\Forms\Types\HostSignUp;
 use AppBundle\Forms\Types\SignIn;
-use AppBundle\Models\CustomerSignUp as CustomerSignUpDto;
+use AppBundle\Models\HostSignUp as HostSignUpDto;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
-class CustomerAccountController extends Controller
+class HostAccountController extends Controller
 {
     public function signInAction(Request $request)
     {
@@ -23,7 +23,7 @@ class CustomerAccountController extends Controller
         $error = $authenticationUtils->getLastAuthenticationError();
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        return $this->render('@App/CustomerAccount/signIn.html.twig', [
+        return $this->render('@App/HostAccount/signIn.html.twig', [
             'lastUsername' => $lastUsername,
             'error' => $error,
             'signInForm' => $form->createView(),
@@ -32,7 +32,7 @@ class CustomerAccountController extends Controller
 
     public function signUpAction(Request $request)
     {
-        $form = $this->createForm(CustomerSignUp::class, new CustomerSignUpDto());
+        $form = $this->createForm(HostSignUp::class, new HostSignUpDto());
 
         if ($request->isMethod('post')) {
 
@@ -42,22 +42,22 @@ class CustomerAccountController extends Controller
 
                 $signUp = $form->getData();
 
-                $this->get('sign_up')->signUpCustomer($signUp);
+                $this->get('sign_up')->signUpHost($signUp);
 
                 $customer = $this->get('repositories.customers')
                     ->loadUserByUsername($signUp->email)
                 ;
 
-                $token = new UsernamePasswordToken($customer, null, 'customers', ['ROLE_CUSTOMER']);
+                $token = new UsernamePasswordToken($customer, null, 'hosts', ['ROLE_HOST']);
                 $this->get('security.token_storage')->setToken($token);
-                $this->get('session')->set('_security_customer', serialize($token));
+                $this->get('session')->set('_security_host', serialize($token));
 
                 return new RedirectResponse('/');
             }
         }
 
         return $this->render(
-            '@App/CustomerAccount/signUp.html.twig',
+            '@App/HostAccount/signUp.html.twig',
             ['signUpForm' => $form->createView()]
         );
     }

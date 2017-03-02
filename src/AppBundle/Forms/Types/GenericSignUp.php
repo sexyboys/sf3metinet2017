@@ -11,7 +11,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 /**
  * @author Boris Guéry <guery.b@gmail.com>
  */
-class SignUp extends AbstractType
+class GenericSignUp extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {

@@ -12,10 +12,13 @@ security:
                         roles: [ROLE_ADMIN]
         customers:
             id: security.customers_provider
+        hosts:
+            id: security.hosts_provider
 
     encoders:
         Symfony\Component\Security\Core\User\User: plaintext
         AppBundle\Models\Customer: plaintext
+        AppBundle\Models\Host: plaintext
 
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
@@ -29,16 +32,31 @@ security:
             http_basic:
                 realm: "Admin area"
 
-        main:
+        host:
+            anonymous: ~
+            pattern: ^/hosts
+            provider: hosts
+            form_login:
+                login_path: public.host.sign_in
+                check_path: public.host.sign_in
+            logout:
+                path: /signout
+            access_denied_url: public.host.sign_in
+
+        customer:
+            pattern: ^/.*
             anonymous: ~
             provider: customers
             form_login:
-                login_path: public.sign_in
-                check_path: public.sign_in
+                login_path: public.customer.sign_in
+                check_path: public.customer.sign_in
             logout:
                 path: /signout
+            access_denied_url: public.customer.sign_in
 
     role_hierarchy:
+        ROLE_CUSTOMER: [ROLE_USER]
+        ROLE_HOST: [ROLE_USER]
         ROLE_ADMIN: [ROLE_USER]
 
     access_control:
@@ -47,7 +65,16 @@ security:
           roles: ROLE_ADMIN
       -
           path: ^/reserve
-          roles: ROLE_USER
+          roles: ROLE_CUSTOMER
       -
-          path: ^/signin,
+          path: ^/hosts/signup
+          roles: IS_AUTHENTICATED_ANONYMOUSLY
+      -
+          path: ^/hosts/signin
+          roles: IS_AUTHENTICATED_ANONYMOUSLY
+      -
+          path: ^/hosts
+          roles: ROLE_HOST
+      -
+          path: ^/signin
           roles: IS_AUTHENTICATED_ANONYMOUSLY
