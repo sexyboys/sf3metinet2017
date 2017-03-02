@@ -54,7 +54,7 @@ class Customer implements UserInterface
         return $this->id;
     }
 
-    public function getPasswordResetToken(): ?string
+    public function getPasswordResetToken(): string
     {
         return ($this->passwordReset instanceof PasswordReset)
             ? $this->passwordReset->getToken()
